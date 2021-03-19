@@ -48,11 +48,28 @@ function hourBackground() {
 			$(this).addClass('future');
 		};
 	})
+	
+};
 
+//Will save the textarea once the save button is clicked
+
+$('.saveBtn').on("click",function() {
+	var value = $(this).siblings('.description').val();
+	var time = $(this).siblings('.description').data('milHour');
+	localStorage.setItem(time, value)
+	console.log(value);
+	console.log(time);
+});
+
+function initPage() {
+	$('.description').each(function () {
+		$(this).text("hello")
+	})
+	// $('#hour-11 .description').val(localStorage.getItem('hour-11'));
 };
 
 $(document).ready(function () {
-	// initPage();
+	initPage();
 	hourBackground();
 });
 
@@ -83,16 +100,7 @@ $(document).ready(function () {
 // 	})
 // }
 
-// //how to save the text area
-// $('.saveBtn').on("click",function() {
-// 	var value = $(this).siblings('.description').val();
-// 	var time = $(this).parent().attr('id');
-// 	localStorage.setItem(time, value)
-// });
 
-// //this is manual
-
-// $('#hour-11 .description').val(localStorage.getItem('hour-11'));
 
 // function updateHours() {
 // 	$('.time-block').each(function() {
