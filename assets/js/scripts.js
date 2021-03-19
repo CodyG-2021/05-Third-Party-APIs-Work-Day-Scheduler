@@ -1,9 +1,17 @@
 var contEl = $('.container');
+//Array that contains times for loop
 var timeHr= ['7 AM','8 AM','9 AM','10 AM','11 AM','12 PM','1 PM','2 PM','3 PM','4 PM','5 PM'];
+var milTime= [7,8,9,10,11,12,13,14,15,16,17];
 
+//Top Time and Date displayed
 var today = moment();
 $('#currentDay').text(today.format('dddd, MMMM Do YYYY'));
 
+//Pull in the current hour in 24hr format
+var curHour = today.format('H');
+console.log(` this is current time: ${curHour}`);
+
+//Create elements for the time blocks.
 for (let i = 0; i < timeHr.length; i++) {
 	var rowEl = $('<row>');
 	var divEl = $('<div>');
@@ -11,11 +19,12 @@ for (let i = 0; i < timeHr.length; i++) {
 	var btnEl = $('<button>');
 
 	rowEl.addClass('row time-block');
-	divEl.addClass('col-12 col-md-8 col-xl-2 hour');
+	divEl.addClass('col-12 col-md-2 col-xl-2 hour');
 	taEl.addClass('col-12 col-md-8 col-xl-8 description');
-	btnEl.addClass('col-12 col-md-8 col-xl-2 saveBtn');
+	btnEl.addClass('col-12 col-md-2 col-xl-2 saveBtn');
 
-	divEl.data('hour', 999);
+	taEl.data('milHour', milTime[i]);
+	// console.log(taEl.data('milHour'));
 
 	divEl.text(`${timeHr[i]}`);
 	btnEl.text('💾');
@@ -26,7 +35,27 @@ for (let i = 0; i < timeHr.length; i++) {
 	rowEl.append(btnEl);
 };
 
-console.log(divEl.data('hour'));
+
+function hourBackground() {
+	$('.description').each(function () {
+		var mHour = $(this).data('milHour');
+		// console.log(mHour);
+		if (mHour < +curHour) {
+			$(this).addClass('past');
+		} else if (+mHour === +curHour) {
+			$(this).addClass('present');
+		} else {
+			$(this).addClass('future');
+		};
+	})
+
+};
+
+$(document).ready(function () {
+	// initPage();
+	hourBackground();
+});
+
 
 {/* <div class="container">
 <row class="row time-block">
@@ -51,5 +80,28 @@ console.log(divEl.data('hour'));
 // function getHour() {
 // 	$('.time-block').each(function (){
 // 		var blockHour = $(this).attr('id').split('-')[1];
+// 	})
+// }
+
+// //how to save the text area
+// $('.saveBtn').on("click",function() {
+// 	var value = $(this).siblings('.description').val();
+// 	var time = $(this).parent().attr('id');
+// 	localStorage.setItem(time, value)
+// });
+
+// //this is manual
+
+// $('#hour-11 .description').val(localStorage.getItem('hour-11'));
+
+// function updateHours() {
+// 	$('.time-block').each(function() {
+// 		// parse int makes it an integer
+// 		var hour = parsInt($(this).attr('id').split('_')[1]);
+
+// 		//+hour just makes it an int as well
+// 		if (+hour < currentHour) {
+// 			$(this).addClass('past');
+// 		}
 // 	})
 // }
