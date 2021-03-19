@@ -1,17 +1,19 @@
+//Links the container where everything lives.
 var contEl = $('.container');
-//Array that contains times for loop
-var timeHr= ['7 AM','8 AM','9 AM','10 AM','11 AM','12 PM','1 PM','2 PM','3 PM','4 PM','5 PM'];
-var milTime= [7,8,9,10,11,12,13,14,15,16,17];
 
-//Top Time and Date displayed
+//Array that contains times for loop and the 24hr format
+var timeHr = ['7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM'];
+var milTime = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+//Jumbotron Date displayed
 var today = moment();
 $('#currentDay').text(today.format('dddd, MMMM Do YYYY'));
 
 //Pull in the current hour in 24hr format
 var curHour = today.format('H');
-console.log(` this is current time: ${curHour}`);
+console.log(`The current 24-hour clock time is: ${curHour}`);
 
-//Create elements for the time blocks.
+//Create elements for the time blocks
 for (let i = 0; i < timeHr.length; i++) {
 	var rowEl = $('<row>');
 	var divEl = $('<div>');
@@ -23,8 +25,8 @@ for (let i = 0; i < timeHr.length; i++) {
 	taEl.addClass('col-12 col-md-8 col-xl-8 description');
 	btnEl.addClass('col-12 col-md-2 col-xl-2 saveBtn');
 
+	//Set a data attribute to a 24hr time frame 
 	taEl.data('milHour', milTime[i]);
-	// console.log(taEl.data('milHour'));
 
 	divEl.text(`${timeHr[i]}`);
 	btnEl.text('💾');
@@ -35,11 +37,10 @@ for (let i = 0; i < timeHr.length; i++) {
 	rowEl.append(btnEl);
 };
 
-
+//Applies the correct CSS to the text area based on what time it is
 function hourBackground() {
 	$('.description').each(function () {
 		var mHour = $(this).data('milHour');
-		// console.log(mHour);
 		if (mHour < +curHour) {
 			$(this).addClass('past');
 		} else if (+mHour === +curHour) {
@@ -48,68 +49,26 @@ function hourBackground() {
 			$(this).addClass('future');
 		};
 	})
-	
 };
 
 //Will save the textarea once the save button is clicked
-
-$('.saveBtn').on("click",function() {
-	var value = $(this).siblings('.description').val();
+$('.saveBtn').on("click", function () {
 	var time = $(this).siblings('.description').data('milHour');
-	localStorage.setItem(time, value)
-	console.log(value);
-	console.log(time);
+	var value = $(this).siblings('.description').val();
+	localStorage.setItem(time, value);
+	alert("~Memo Saved~");
 });
 
-function initPage() {
+//Once the DOM has loaded then pull the stored data and 
+function memoPuller() {
 	$('.description').each(function () {
-		$(this).text("hello")
+		var hourGrab = $(this).data('milHour');
+		$(this).val(localStorage.getItem(hourGrab))
 	})
-	// $('#hour-11 .description').val(localStorage.getItem('hour-11'));
 };
 
+//Lets the DOM load since we are dynamically creating the elements then lets the other functions fire
 $(document).ready(function () {
-	initPage();
+	memoPuller();
 	hourBackground();
 });
-
-
-{/* <div class="container">
-<row class="row time-block">
-
-	<div class="col-12 col-md-8 col-xl-2 hour" >9AM</div>
-
-	<textarea class="col-12 col-md-8 col-xl-8 description"></textarea>
-
-	<button class="col-12 col-md-8 col-xl-2 saveBtn">💾</button>
-
-</row>
-</div> */}
-
-//make a time block container that will contain rows that will contain 3 columns with the middle being wider
-
-// $('.saveBtn').on("click", function (event){
-// 	var value = $(this).parent('.time-block').find('.description').val();
-// 	var time = $(this).parent().attr('id');
-// 	localStorage.setItem(time, value);
-// });
-
-// function getHour() {
-// 	$('.time-block').each(function (){
-// 		var blockHour = $(this).attr('id').split('-')[1];
-// 	})
-// }
-
-
-
-// function updateHours() {
-// 	$('.time-block').each(function() {
-// 		// parse int makes it an integer
-// 		var hour = parsInt($(this).attr('id').split('_')[1]);
-
-// 		//+hour just makes it an int as well
-// 		if (+hour < currentHour) {
-// 			$(this).addClass('past');
-// 		}
-// 	})
-// }
