@@ -13,3 +13,5 @@ Below is a screen shot of the planner:
 Below is a link to the site:
 
 https://codyg-2021.github.io/05-Third-Party-APIs-Work-Day-Scheduler/
+
+![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)
